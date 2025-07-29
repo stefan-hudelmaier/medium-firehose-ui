@@ -37,19 +37,6 @@ A React application that connects to an MQTT server via WebSocket, subscribes to
 
 3. The application will automatically connect to the MQTT broker and subscribe to the 'medium/firehose' topic
 
-## Testing
-
-A test script is included to help verify the application's functionality:
-
-1. Install Node.js if you haven't already
-
-2. Run the test script:
-   ```
-   node test-mqtt-publish.js
-   ```
-
-This script will publish sample XML messages to the 'medium/firehose' topic, which should appear in the UI.
-
 ## XML Message Format
 
 The application expects XML messages in the Atom format:

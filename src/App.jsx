@@ -12,9 +12,34 @@ import {
   Alert,
   Stack,
   Chip,
-  Link
+  Link,
+  styled,
+  keyframes
 } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
+
+// Pulsing animation for connected status
+const pulse = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const PulsingDot = styled('span')(({ theme }) => ({
+  display: 'inline-block',
+  width: 8,
+  height: 8,
+  borderRadius: '50%',
+  backgroundColor: theme.palette.success.main,
+  marginRight: 8,
+  animation: `${pulse} 2s infinite`,
+}));
 
 // Create a theme
 const theme = createTheme({
@@ -32,36 +57,63 @@ const theme = createTheme({
 const MessageCard = ({ message, index }) => {
   return (
     <Paper
-      elevation={1}
-      variant='outlined'
+      elevation={0}
       sx={{
-        p: 2,
-        mb: 2,
-        borderLeft: '4px solid',
-        borderColor: index === 0 ? 'primary.main' : 'grey.300',
-        backgroundColor: index === 0 ? 'rgba(85, 108, 214, 0.05)' : 'white'
+        p: 3,
+        mb: 3,
+        borderRadius: 2,
+        border: '1px solid',
+        borderColor: 'divider',
+        backgroundColor: 'background.paper',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+        }
       }}
     >
-      <Typography variant="h5" gutterBottom>
-        <Link href={message.link} target="_blank" rel="noopener" underline="hover">
+      <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 700, lineHeight: 1.3 }}>
+        <Link 
+          href={message.link} 
+          target="_blank" 
+          rel="noopener" 
+          underline="hover" 
+          color="text.primary"
+          sx={{
+            '&:hover': {
+              color: 'primary.main'
+            }
+          }}
+        >
           {message.title || 'Untitled'}
         </Link>
       </Typography>
 
       {message.author && (
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
           By {message.author}
         </Typography>
       )}
 
       {message.categories && message.categories.length > 0 && (
-        <Box sx={{ mt: 1, mb: 1 }}>
+        <Box sx={{ mt: 1.5, mb: 1.5, display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {message.categories.map((category, idx) => (
             <Chip
               key={idx}
-              label={category}
+              component="a"
+              href={`https://medium.com/tag/${category.toLowerCase().replace(/\s+/g, '-')}`}
+              target="_blank"
+              rel="noopener"
+              clickable
+              label={`#${category}`}
               size="small"
-              sx={{ mr: 0.5, mb: 0.5 }}
+              sx={{
+                mr: 0.5,
+                mb: 0.5,
+                '&:hover': {
+                  backgroundColor: 'primary.light',
+                  color: 'primary.contrastText'
+                }
+              }}
               color="primary"
               variant="outlined"
             />
@@ -69,8 +121,8 @@ const MessageCard = ({ message, index }) => {
         </Box>
       )}
 
-      <Typography variant="caption" color="text.secondary">
-        Published: {message.published ? new Date(message.published).toLocaleString() : 'Unknown'}
+      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+        {message.published ? new Date(message.published).toLocaleString() : 'Unknown'}
       </Typography>
     </Paper>
   );
@@ -83,7 +135,6 @@ function App() {
 
   useEffect(() => {
     const gcmbPublicWebToken = "HpWTbUHJdB6mPBN4oWHVHJyOAKco1WME";
-    //const gcmbPublicWebToken = "Eud3aix1sewae5pooji6oophiu9ahdah";
     const url = `wss://public.local.gcmb.io/?token=${gcmbPublicWebToken}`;
     const clientId = Math.random().toString(16).substring(2, 8);
 
@@ -186,38 +237,69 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Medium Firehose
-            </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {connectionStatus === 'connecting' && (
-                <CircularProgress color="inherit" size={24} sx={{ mr: 1 }} />
-              )}
-              <Typography variant="body2">
-                Status: {connectionStatus}
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
+        <AppBar 
+          position="static" 
+          elevation={0} 
+          sx={{ 
+            backgroundColor: 'white', 
+            color: 'text.primary', 
+            borderBottom: '1px solid', 
+            borderColor: 'divider',
+            width: '100%',
+            maxWidth: '100%',
+            m: 0,
+            p: 0
+          }}
+        >
+          <Container maxWidth={false} sx={{ px: { xs: 2, md: 4 }, maxWidth: '100%' }}>
+            <Toolbar 
+              disableGutters 
+              sx={{ 
+                minHeight: 64, 
+                justifyContent: 'space-between',
+                maxWidth: '1200px',
+                width: '100%',
+                mx: 'auto',
+                px: { xs: 0, md: 2 }
+              }}
+            >
+              <Typography variant="h6" component="div" sx={{ fontWeight: 700, fontSize: '1.25rem' }}>
+                Medium Firehose
               </Typography>
-            </Box>
-          </Toolbar>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {connectionStatus === 'connecting' ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : connectionStatus === 'Connected' ? (
+                    <>
+                      <PulsingDot />
+                      <Typography variant="body2" color="success.main">
+                        {connectionStatus}
+                      </Typography>
+                    </>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      {connectionStatus}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            </Toolbar>
+          </Container>
         </AppBar>
 
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%',
-          px: 2 // Add some padding on small screens
-        }}>
-          <Container
-            maxWidth="md"
-            sx={{
-              mt: 4,
-              width: '100%',
-              maxWidth: { xs: '100%', sm: '600px', md: '800px' },
-              mx: 'auto' // Center the container
-            }}
-          >
+        <Box 
+          component="main" 
+          sx={{ 
+            flex: 1, 
+            width: '100%', 
+            p: { xs: 2, md: 4 },
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
+          <Box sx={{ width: '100%', maxWidth: '1200px' }}>
             {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 {error}
@@ -241,7 +323,7 @@ function App() {
                 ))}
               </Stack>
             )}
-          </Container>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
