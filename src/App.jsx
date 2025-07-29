@@ -78,7 +78,7 @@ const MessageCard = ({ message, index }) => {
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ function App() {
 
     // Handle connection events
     client.on('connect', () => {
-      setConnectionStatus('connected');
+      setConnectionStatus('Connected');
       setError(null);
       console.log('Connected to MQTT broker');
 
@@ -224,8 +224,8 @@ function App() {
               </Alert>
             )}
 
-            <Typography variant="h4" gutterBottom>
-              Medium Articles
+            <Typography variant="body1" sx={{pb: 2}}>
+              New posts will be displayed as they are published
             </Typography>
 
             {messages.length === 0 ? (
