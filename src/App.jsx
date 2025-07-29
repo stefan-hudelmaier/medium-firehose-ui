@@ -32,7 +32,8 @@ const theme = createTheme({
 const MessageCard = ({ message, index }) => {
   return (
     <Paper
-      elevation={3}
+      elevation={1}
+      variant='outlined'
       sx={{
         p: 2,
         mb: 2,
@@ -51,10 +52,6 @@ const MessageCard = ({ message, index }) => {
         <Typography variant="subtitle1" gutterBottom>
           By {message.author}
         </Typography>
-      )}
-
-      {message.summary && (
-        <Typography variant="body1" gutterBottom dangerouslySetInnerHTML={{ __html: message.summary }} />
       )}
 
       {message.categories && message.categories.length > 0 && (
@@ -85,9 +82,9 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    //const gcmbPublicWebToken = "HpWTbUHJdB6mPBN4oWHVHJyOAKco1WME";
-    const gcmbPublicWebToken = "Eud3aix1sewae5pooji6oophiu9ahdah";
-    const url = `wss://public.gcmb.io/?token=${gcmbPublicWebToken}`;
+    const gcmbPublicWebToken = "HpWTbUHJdB6mPBN4oWHVHJyOAKco1WME";
+    //const gcmbPublicWebToken = "Eud3aix1sewae5pooji6oophiu9ahdah";
+    const url = `wss://public.local.gcmb.io/?token=${gcmbPublicWebToken}`;
     const clientId = Math.random().toString(16).substring(2, 8);
 
     const options = {
@@ -108,10 +105,11 @@ function App() {
     // Handle connection events
     client.on('connect', () => {
       setConnectionStatus('connected');
+      setError(null);
       console.log('Connected to MQTT broker');
 
       // Subscribe to topic
-      const topic = 'medium/firehose-firehose/#';
+      const topic = 'medium/medium-firehose/all';
       client.subscribe(topic, (err) => {
         if (err) {
           console.error('Subscription error:', err);

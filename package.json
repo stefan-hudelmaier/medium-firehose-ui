@@ -10,13 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "mqtt": "^5.3.5",
-    "@mui/material": "^5.15.11",
-    "@mui/icons-material": "^5.15.11",
     "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0"
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.11",
+    "@mui/material": "^5.15.11",
+    "mqtt": "^5.3.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
@@ -27,6 +27,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
-    "vite": "^7.0.4"
+    "vite": "^7.0.4",
+    "vite-plugin-mkcert": "^1.17.8"
   }
 }
