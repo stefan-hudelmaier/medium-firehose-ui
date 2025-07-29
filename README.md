@@ -4,8 +4,9 @@ A React application that connects to an MQTT server via WebSocket, subscribes to
 
 ## Features
 
-- Connects to a remote MQTT server via MQTT over WebSocket
-- Subscribes to an MQTT topic ('medium/firehose' by default)
+- Connects to [gcmb.io](https://gcmb.io) via MQTT over WebSocket
+- Gets data from the [medium/medium-firehose](https://gcmb.io/medium/medium-firehose) project on gcmb
+- Subscribes to the MQTT topic [medium/medium-firehose/all](https://gcmb.io/medium/medium-firehose/all)
 - Parses received messages as XML
 - Displays new messages at the top of the page, pushing existing messages down
 - Built with Material-UI for a responsive and modern UI
@@ -49,28 +50,6 @@ A test script is included to help verify the application's functionality:
 
 This script will publish sample XML messages to the 'medium/firehose' topic, which should appear in the UI.
 
-## Configuration
-
-You can modify the MQTT connection settings in `src/App.jsx`:
-
-```javascript
-const mqttConfig = {
-  protocol: 'wss', // WebSocket Secure
-  host: 'broker.emqx.io', // Change to your MQTT broker
-  port: 8084, // Change to your broker's WebSocket port
-  clientId: `mqtt_${Math.random().toString(16).slice(2, 10)}`,
-  // Add username and password if required
-  // username: 'your_username',
-  // password: 'your_password',
-};
-```
-
-You can also change the subscription topic:
-
-```javascript
-const topic = 'medium/firehose'; // Change to your desired topic
-```
-
 ## XML Message Format
 
 The application expects XML messages in the Atom format:
@@ -95,7 +74,6 @@ The application expects XML messages in the Atom format:
 The application will display:
 - The title as a headline with a link to the source
 - The author name
-- The summary content (HTML is supported)
 - Categories as chips
 - Publication date
 
