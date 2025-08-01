@@ -272,7 +272,7 @@ function App() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <IconButton
                   component="a"
-                  href="https://github.com/stefan-hudelmaier/gcmb-medium-firehose-ui"
+                  href="https://github.com/stefan-hudelmaier/medium-firehose-ui"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub repository"
