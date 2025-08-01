@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://[YOUR_GITHUB_USERNAME].github.io/medium-firehose-ui",
+  "homepage": "https://stefan-hudelmaier.github.io/medium-firehose-ui",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/medium-firehose-ui/",
+    "build": "vite build --base='./'",
     "preview": "vite preview",
     "lint": "eslint .",
     "predeploy": "npm run build",

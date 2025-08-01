@@ -14,9 +14,11 @@ import {
   Chip,
   Link,
   styled,
-  keyframes
+  keyframes,
+  IconButton
 } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
+import GitHubIcon from '@mui/icons-material/GitHub'
 
 // Pulsing animation for connected status
 const pulse = keyframes`
@@ -72,11 +74,11 @@ const MessageCard = ({ message, index }) => {
       }}
     >
       <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 700, lineHeight: 1.3 }}>
-        <Link 
-          href={message.link} 
-          target="_blank" 
-          rel="noopener" 
-          underline="hover" 
+        <Link
+          href={message.link}
+          target="_blank"
+          rel="noopener"
+          underline="hover"
           color="text.primary"
           sx={{
             '&:hover': {
@@ -135,7 +137,7 @@ function App() {
 
   useEffect(() => {
     const gcmbPublicWebToken = "HpWTbUHJdB6mPBN4oWHVHJyOAKco1WME";
-    const url = `wss://public.local.gcmb.io/?token=${gcmbPublicWebToken}`;
+    const url = `wss://public.gcmb.io/?token=${gcmbPublicWebToken}`;
     const clientId = Math.random().toString(16).substring(2, 8);
 
     const options = {
@@ -238,13 +240,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
-        <AppBar 
-          position="static" 
-          elevation={0} 
-          sx={{ 
-            backgroundColor: 'white', 
-            color: 'text.primary', 
-            borderBottom: '1px solid', 
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
+            backgroundColor: 'white',
+            color: 'text.primary',
+            borderBottom: '1px solid',
             borderColor: 'divider',
             width: '100%',
             maxWidth: '100%',
@@ -253,10 +255,10 @@ function App() {
           }}
         >
           <Container maxWidth={false} sx={{ px: { xs: 2, md: 4 }, maxWidth: '100%' }}>
-            <Toolbar 
-              disableGutters 
-              sx={{ 
-                minHeight: 64, 
+            <Toolbar
+              disableGutters
+              sx={{
+                minHeight: 64,
                 justifyContent: 'space-between',
                 maxWidth: '1200px',
                 width: '100%',
@@ -268,6 +270,21 @@ function App() {
                 Medium Firehose
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <IconButton
+                  component="a"
+                  href="https://github.com/stefan-hudelmaier/gcmb-medium-firehose"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub repository"
+                  color="inherit"
+                  sx={{
+                    '&:hover': {
+                      color: 'primary.main'
+                    }
+                  }}
+                >
+                  <GitHubIcon />
+                </IconButton>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   {connectionStatus === 'connecting' ? (
                     <CircularProgress size={16} color="inherit" />
@@ -289,17 +306,17 @@ function App() {
           </Container>
         </AppBar>
 
-        <Box 
-          component="main" 
-          sx={{ 
-            flex: 1, 
-            width: '100%', 
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            width: '100%',
             p: { xs: 2, md: 4 },
             display: 'flex',
             justifyContent: 'center'
           }}
         >
-          <Box sx={{ width: '100%', maxWidth: '1200px' }}>
+          <Box sx={{ width: '100%', maxWidth: '1200px', px: { xs: 0, md: 2 } }}>
             {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
                 {error}
@@ -307,13 +324,14 @@ function App() {
             )}
 
             <Typography variant="body1" sx={{pb: 2}}>
-              New posts will be displayed as they are published
+              New posts will be displayed as they are published. Data is received via MQTT over Websockets from <Link href="https://gcmb.io/medium/medium-firehose">https://gcmb.io/medium/medium-firehose</Link>.
+              The <Link href="https://medium.oldcai.com/">top 100</Link> Medium tags are considered.
             </Typography>
 
             {messages.length === 0 ? (
               <Paper sx={{ p: 3, textAlign: 'center' }}>
                 <Typography variant="body1" color="text.secondary">
-                  Waiting for messages...
+                  Waiting for posts to be published...
                 </Typography>
               </Paper>
             ) : (
