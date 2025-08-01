@@ -324,8 +324,8 @@ function App() {
             )}
 
             <Typography variant="body1" sx={{pb: 2}}>
-              New posts will be displayed as they are published. Data is received via MQTT over Websockets from <Link href="https://gcmb.io/medium/medium-firehose">https://gcmb.io/medium/medium-firehose</Link>.
-              The <Link href="https://medium.oldcai.com/">top 100</Link> Medium tags are considered.
+              New posts will be displayed as they are published. Data is received via MQTT over Websockets from <Link href="https://gcmb.io/medium/medium-firehose" target="_blank">https://gcmb.io/medium/medium-firehose</Link>.
+              The <Link href="https://medium.oldcai.com/" target="_blank">top 100 Medium tags</Link> are considered.
             </Typography>
 
             {messages.length === 0 ? (

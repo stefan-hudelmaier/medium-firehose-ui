@@ -17,7 +17,7 @@ A React application that connects to an MQTT server via WebSocket, subscribes to
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
+   git clone https://github.com/stefan-hudelmaier/gcmb-medium-firehose-ui.git
    cd medium-firehose-ui
    ```
 
