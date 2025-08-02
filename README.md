@@ -2,6 +2,8 @@
 
 A React application that connects to an MQTT server via WebSocket, subscribes to a topic, and displays received XML messages in real-time.
 
+The app is running here: https://stefan-hudelmaier.github.io/medium-firehose-ui/
+
 ## Features
 
 - Connects to [gcmb.io](https://gcmb.io) via MQTT over WebSocket
